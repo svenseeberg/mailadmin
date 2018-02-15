@@ -56,10 +56,10 @@ function verify_logged_in($cfg, $user=false, $password=false) {
         $sid = session_id();
         $time = time();
         if($user_id) {
-            $query = "INSERT INTO logins (id, session_id, timeout) VALUES (?, ?, ?)";
+            $query = "INSERT INTO logins (id, session_id, timeout) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE session_id=?, timeout=?";
             $stmt = $cfg['mysqli']->prepare($query);
             $timeout = $time + 600;
-            $stmt->bind_param("iss", $user_id, $sid, $timeout);
+            $stmt->bind_param("issss", $user_id, $sid, $timeout, $sid, $timeout);
             $stmt->execute();
             $stmt->close();
         } else {
@@ -70,10 +70,10 @@ function verify_logged_in($cfg, $user=false, $password=false) {
     $stmt = $cfg['mysqli']->prepare($query);
     $stmt->bind_param('si',$sid,$time);
     $stmt->execute();
-    $stmt->bind_result($blubber);
+    $stmt->bind_result($user_id);
     $stmt->fetch();
     $stmt->close();
-    if($blubber) {
+    if($user_id) {
         set_user_domain($cfg, $user_id);
         return true;
     } else {
