@@ -18,7 +18,7 @@
     <![endif]-->
   </head>
   <body style="width:100%;">
-   <?php var_dump( $cfg['admins']); ?>
+   <?php var_dump( $cfg ); ?>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>

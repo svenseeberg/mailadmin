@@ -48,6 +48,7 @@ function set_user_domain($cfg, $user_id) {
     $cfg['username'] = $username;
     $cfg['userdomain'] = $domain;
     $stmt->close();
+    return $cfg;
 }
 
 function verify_logged_in($cfg, $user=false, $password=false) {
@@ -74,8 +75,8 @@ function verify_logged_in($cfg, $user=false, $password=false) {
     $stmt->fetch();
     $stmt->close();
     if($user_id) {
-        set_user_domain($cfg, $user_id);
-        return true;
+        $cfg = set_user_domain($cfg, $user_id);
+        return $cfg;
     } else {
         return false;
     }
