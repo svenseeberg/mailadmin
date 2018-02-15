@@ -1,7 +1,10 @@
 <?php
-$config = parse_ini_file ( 'config.ini', $process_sections = true);
-var_dump($config);
-$mysqli = new mysqli($config['db']['host'], $config['db']['user'], $config['db']['password'], $config['db']['database']);
-start_session();
-var_dump(session_id());
+require_once('functions.php');
+$cfg = init();
+if(verify_logged_in($cfg,$_POST['user'],$_POST['password'])) {
+    draw('menu', $cfg);
+} else {
+    draw('login', $cfg);
+}
+
 ?>
