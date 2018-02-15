@@ -16,7 +16,7 @@ function encrypt_password($password, $salt=false) {
 
 function verify_password($db_password, $new_password) {
     $split = explode('$', $db_password);
-    $encrypted = encrypt_password($new_password, $$split[2]);
+    $encrypted = encrypt_password($new_password, $split[2]);
     if($encrypted == $db_password)
         return true;
     else
@@ -31,36 +31,58 @@ function login($cfg, $user, $password) {
     $stmt->bind_result($id, $db_password);
     $stmt->execute();
     $stmt->fetch();
+    $stmt->close();
     if(verify_password($db_password, $password))
         return $id;
     else
         return false;
 }
 
-function draw($page, $cfg) {
-    include("templates/".$page.".php");
+function set_user_domain($cfg, $user_id) {
+    $query = "SELECT username, domain FROM accounts WHERE id=?";
+    $stmt = $cfg['mysqli']->prepare($query);
+    $stmt->bind_param('i', $user_id);
+    $stmt->bind_result($username, $domain);
+    $stmt->execute();
+    $stmt->fetch();
+    $cfg['username'] = $username;
+    $cfg['userdomain'] = $domain;
+    $stmt->close();
 }
 
 function verify_logged_in($cfg, $user=false, $password=false) {
     if(is_string($user) and is_string($password) and substr_count($user, '@') == 1){
         $user_id = login($cfg, $user, $password);
+        $sid = session_id();
+        $time = time();
         if($user_id) {
             $query = "INSERT INTO logins (id, session_id, timeout) VALUES (?, ?, ?)";
+            $stmt = $cfg['mysqli']->prepare($query);
+            $timeout = $time + 600;
+            $stmt->bind_param("iss", $user_id, $sid, $timeout);
+            $stmt->execute();
+            $stmt->close();
         } else {
             echo "Try again.";
         }
     }
     $query = "SELECT id FROM logins WHERE session_id=? AND timeout>=?";
     $stmt = $cfg['mysqli']->prepare($query);
-    $sid = session_id();
-    $t = time();
-    $stmt->bind_param('si',$sid,$t);
+    $stmt->bind_param('si',$sid,$time);
     $stmt->execute();
-    if($stmt->num_rows() > 0)
+    $stmt->bind_result($blubber);
+    $stmt->fetch();
+    $stmt->close();
+    if($blubber) {
+        set_user_domain($cfg, $user_id);
         return true;
-    else
+    } else {
         return false;
+    }
 }
 
+function draw($page, $cfg) {
+    include("templates/".$page.".php");
+}
 
 ?>
