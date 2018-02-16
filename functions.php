@@ -2,6 +2,7 @@
 function init() {
     $cfg = parse_ini_file ( 'config.ini', $process_sections = true);
     $cfg['mysqli'] = new mysqli($cfg['db']['host'], $cfg['db']['user'], $cfg['db']['password'], $cfg['db']['database']);
+    $cfg['db']['password'] = 'XXXXXX';
     session_start();
     return $cfg;
 }
@@ -130,16 +131,16 @@ function admin_domains($cfg) {
 }
 
 function list_users($cfg) {
-    $query = "SELECT username, domain FROM accounts WHERE id=?";
-    $stmt = $cfg['mysqli']->prepare($query);
-    $stmt->bind_param('i', $user_id);
-    $stmt->bind_result($username, $domain);
-    $stmt->execute();
-    $stmt->fetch();
-    $cfg['username'] = $username;
-    $cfg['userdomain'] = $domain;
-    $stmt->close();
-    return $cfg;
+    /* We don't need a prepared statement here because the query
+     * parameters are read from the config.ini. And a variable amount of
+     * items in the IN clause is a nightmare with prepared statements. */
+    $inclause=implode("', '",($cfg['admin_domains']));
+    $query = sprintf("SELECT id, username, domain FROM accounts WHERE domain IN ('%s')",$inclause);
+    $result = $cfg['mysqli']->query($query);
+    while($row = $result->fetch_array(MYSQLI_ASSOC)){
+        $user_list[] = array('id' => $row['id'], 'address' => $row['username'].'@'.$row['domain']);
+    }
+    return $user_list;
 }
 
 ?>
