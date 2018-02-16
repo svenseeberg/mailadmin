@@ -26,7 +26,7 @@
   </ul>
   <div class="tab-content" style="margin-top:0.5em;">
     <div id="home" class="tab-pane fade in active">
-     <h3>Change password</h3>
+     <h3>Change Your Password</h3>
      <div class="container">
       <div class="row">
        <div class="" style="margin:auto;">

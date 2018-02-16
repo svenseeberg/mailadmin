@@ -95,7 +95,8 @@ function draw($page, $cfg) {
     include("templates/".$page.".php");
 }
 
-function parse_action($cfg, $_POST['add_user']) {
+function parse_action($cfg) {
+    if(is_string($_POST['add_user'])) {
         
     } elseif(is_string($_POST['add_alias'])) {
         
@@ -107,7 +108,7 @@ function parse_action($cfg, $_POST['add_user']) {
 }
 
 function parse_page($cfg) {
-    if(strlen($_GET['path']) > 0 {
+    if(strlen($_GET['path']) > 0) {
         $parts = explode('/', $_GET['path']);
         $cfg['page'] = $parts[0];
         $cfg['edit'] = $parts[1];
@@ -118,9 +119,10 @@ function parse_page($cfg) {
     return $cfg;
 }
 
-admin_domains($cfg) {
-    foreach($domain as $cfg['admins']) {
-        if (strpos($cfg['admins']['$domain'], $cfg['username'].'@'.$cfg['userdomain']) !== false) {
+function admin_domains($cfg) {
+    $mail = $cfg['username'].'@'.$cfg['userdomain'];
+    foreach($cfg['admins'] as $domain => $addresses) {
+        if (strpos($addresses, $mail) !== false) {
             $cfg['admin_domains'][] = $domain;
         }
     }
