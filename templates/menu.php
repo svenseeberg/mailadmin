@@ -67,11 +67,11 @@
     <div class="container">
       <h2>Mail Admin</h2>
 
-      <ul class="nav nav-tabs">
-        <li class="active"><a data-toggle="tab" href="#home">Change password</a></li>
-        <li><a data-toggle="tab" href="#menu1">Menu 1</a></li>
-        <li><a data-toggle="tab" href="#menu2">Menu 2</a></li>
-        <li><a data-toggle="tab" href="#menu3">Menu 3</a></li>
+      <ul class="nav nav-pills">
+        <li class="active"><a data-toggle="pill" href="#home">Change password</a></li>
+        <li><a data-toggle="pill" href="#menu1">Menu 1</a></li>
+        <li><a data-toggle="pill" href="#menu2">Menu 2</a></li>
+        <li><a data-toggle="pill" href="#menu3">Menu 3</a></li>
       </ul>
 
       <div class="tab-content">
