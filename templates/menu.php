@@ -18,7 +18,44 @@
     <![endif]-->
   </head>
   <body style="width:100%;">
-   <?php var_dump( $cfg ); ?>
+   <ul class="nav nav-tabs">
+     <li class="active"><a data-toggle="tab" href="#changepw">Change password</a></li>
+     <li><a data-toggle="tab" href="#users">Edit users</a></li>
+     <li><a data-toggle="tab" href="#aliases">Edit alias</a></li>
+   </ul>
+
+   <div class="tab-content">
+    <div id="changepw" class="tab-pane fade in active">
+      <h3>Change password</h3>
+       <div class="container">
+        <div class="row" style="margin-top:100px;">
+         <div class="" style="margin:auto;">
+          <form method='post' action=''>
+           <div class="form-login">
+           <input name="old_pw" type="password" id="user" class="form-control input-sm chat-input" placeholder="Current password" />
+           </br>
+           <input name="new_pw1" type="password" id="password" class="form-control input-sm chat-input" placeholder="New password" />
+           </br>
+           <input name="new_pw2" type="password" id="password" class="form-control input-sm chat-input" placeholder="Confirm new password" />
+           </br>
+           <div class="wrapper">
+           <input type="submit" class="btn btn-info" value="login">
+           </div>
+           </div>
+          </form>
+         </div>
+        </div>
+       </div>
+     </div>
+     <div id="users" class="tab-pane fade">
+       <h3>Edit userse</h3>
+       <p>Some content in menu 1.</p>
+     </div>
+     <div id="aliases" class="tab-pane fade">
+       <h3>Edit alias</h3>
+       <p>Some content in menu 2.</p>
+     </div>
+   </div>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
