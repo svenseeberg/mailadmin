@@ -8,7 +8,6 @@
         parse_action();
         $cfg = parse_page($cfg);
         $cfg = admin_domains($cfg);
-        var_dump(list_users($cfg));
         draw($cfg['page'], $cfg);
     } else {
         draw('login', $cfg);

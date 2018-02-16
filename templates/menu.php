@@ -49,7 +49,22 @@
     </div>
     <div id="menu1" class="tab-pane fade">
       <h3>Edit Users</h3>
-      <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+       <table class="table table-hover">
+         <thead>
+           <tr>
+             <th scope="col">Username</th>
+             <th scope="col"></th>
+           </tr>
+         </thead>
+         <tbody>
+          <?php
+           $users = list_users($cfg);
+           foreach($users as $user) {
+            echo "<tr><td>".$user['address']."</td><td>&#9998; &#128465;</td></tr>";
+           }
+          ?>
+         </tbody>
+       </table>
     </div>
     <div id="menu2" class="tab-pane fade">
       <h3>Edit Aliases</h3>
