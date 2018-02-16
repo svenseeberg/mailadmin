@@ -95,4 +95,8 @@ function draw($page, $cfg) {
     include("templates/".$page.".php");
 }
 
+function parse_post() {
+    
+}
+
 ?>
