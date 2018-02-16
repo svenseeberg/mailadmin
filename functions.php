@@ -80,7 +80,7 @@ function verify_logged_in($cfg, $user=false, $password=false) {
         if($user_id)
             save_session($cfg, $user_id);
         else
-            echo "Try again.";
+            return false;
     }
     $user_id = get_current_user_id($cfg);
     if($user_id) {
@@ -95,8 +95,49 @@ function draw($page, $cfg) {
     include("templates/".$page.".php");
 }
 
-function parse_post() {
-    
+function parse_action($cfg, $_POST['add_user']) {
+        
+    } elseif(is_string($_POST['add_alias'])) {
+        
+    } elseif(is_string($_POST['update_user'])) {
+        
+    } elseif(is_string($_POST['update_alias'])) {
+        
+    }
+}
+
+function parse_page($cfg) {
+    if(strlen($_GET['path']) > 0 {
+        $parts = explode('/', $_GET['path']);
+        $cfg['page'] = $parts[0];
+        $cfg['edit'] = $parts[1];
+        $cfg['item'] = $parts[2];
+    } else {
+        $cfg['page'] = 'menu';
+    }
+    return $cfg;
+}
+
+admin_domains($cfg) {
+    foreach($domain as $cfg['admins']) {
+        if (strpos($cfg['admins']['$domain'], $cfg['username'].'@'.$cfg['userdomain']) !== false) {
+            $cfg['admin_domains'][] = $domain;
+        }
+    }
+    return $cfg;
+}
+
+function list_users($cfg) {
+    $query = "SELECT username, domain FROM accounts WHERE id=?";
+    $stmt = $cfg['mysqli']->prepare($query);
+    $stmt->bind_param('i', $user_id);
+    $stmt->bind_result($username, $domain);
+    $stmt->execute();
+    $stmt->fetch();
+    $cfg['username'] = $username;
+    $cfg['userdomain'] = $domain;
+    $stmt->close();
+    return $cfg;
 }
 
 ?>

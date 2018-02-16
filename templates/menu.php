@@ -12,24 +12,23 @@
 <body>
 
 <div class="container">
-  <h2 style="margin-top:3em;margin-bottom:3em;">Mail Admin</h2>
-
+  <h2 style="margin-top:2em;margin-bottom:1em;"><a href="/">Mail Admin</a></h2>
   <ul class="nav nav-pills">
-  <li class="nav-item">
-    <a data-toggle="pill"  class="nav-link active" href="#home">Change Password</a>
-  </li>
-  <li class="nav-item">
-    <a data-toggle="pill"  class="nav-link" href="#menu1">Edit Users</a>
-  </li>
-  <li class="nav-item">
-    <a data-toggle="pill"  class="nav-link" href="#">Edit Aliases</a>
-  </li>
-</ul>
-  <div class="tab-content">
+   <li class="nav-item">
+     <a data-toggle="pill"  class="nav-link active" href="#home">Change Password</a>
+   </li>
+   <li class="nav-item">
+     <a data-toggle="pill"  class="nav-link" href="#menu1">Edit Users</a>
+   </li>
+   <li class="nav-item">
+     <a data-toggle="pill"  class="nav-link" href="#">Edit Aliases</a>
+   </li>
+  </ul>
+  <div class="tab-content" style="margin-top:0.5em;">
     <div id="home" class="tab-pane fade in active">
      <h3>Change password</h3>
      <div class="container">
-      <div class="row" style="margin-top:100px;">
+      <div class="row">
        <div class="" style="margin:auto;">
         <form method='post' action=''>
          <div class="form-login">
@@ -49,11 +48,11 @@
      </div>
     </div>
     <div id="menu1" class="tab-pane fade">
-      <h3>Menu 1</h3>
+      <h3>Edit Users</h3>
       <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
     </div>
     <div id="menu2" class="tab-pane fade">
-      <h3>Menu 2</h3>
+      <h3>Edit Aliases</h3>
       <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
     </div>
   </div>
