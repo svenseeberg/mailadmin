@@ -130,17 +130,44 @@ function admin_domains($cfg) {
     return $cfg;
 }
 
-function list_users($cfg) {
+function list_users($cfg, $id=false) {
     /* We don't need a prepared statement here because the query
      * parameters are read from the config.ini. And a variable amount of
      * items in the IN clause is a nightmare with prepared statements. */
     $inclause=implode("', '",($cfg['admin_domains']));
-    $query = sprintf("SELECT id, username, domain FROM accounts WHERE domain IN ('%s')",$inclause);
+    if($id)
+        $query = sprintf("SELECT id, username, domain, quota, enabled, sendonly FROM accounts WHERE id = %i",$id);
+    else
+        $query = sprintf("SELECT id, username, domain, quota, enabled, sendonly FROM accounts WHERE domain IN ('%s')",$inclause);
     $result = $cfg['mysqli']->query($query);
     while($row = $result->fetch_array(MYSQLI_ASSOC)){
-        $user_list[] = array('id' => $row['id'], 'address' => $row['username'].'@'.$row['domain']);
+        $user_list[] = array(   'id' => $row['id'],
+                                'address' => $row['username'].'@'.$row['domain'],
+                                'quota' => $row['quota'],
+                                'enabled' => $row['enabled'],
+                                'sendonly' => $row['sendonly']
+                            );
     }
     return $user_list;
 }
 
+function list_aliases($cfg, $id=false) {
+    /* We don't need a prepared statement here because the query
+     * parameters are read from the config.ini. And a variable amount of
+     * items in the IN clause is a nightmare with prepared statements. */
+    $inclause=implode("', '",($cfg['admin_domains']));
+    if($id)
+        $query = sprintf("SELECT * FROM aliases WHERE id = %i",$id);
+    else
+        $query = sprintf("SELECT * FROM aliases WHERE source_domain IN ('%s')",$inclause);
+    $result = $cfg['mysqli']->query($query);
+    while($row = $result->fetch_array(MYSQLI_ASSOC)){
+        $user_list[] = array(   'id' => $row['id'],
+                                'source' => $row['source_username'].'@'.$row['source_domain'],
+                                'destination' => $row['destination_username'].'@'.$row['destination_domain'],
+                                'enabled' => $row['enabled']
+                            );
+    }
+    return $user_list;
+}
 ?>
