@@ -12,7 +12,7 @@
 <body>
 
 <div class="container">
-  <h2 style="margin-top:2em;margin-bottom:1em;"><a href="/">Mail Admin</a></h2>
+  <h2 style="margin-top:2em;margin-bottom:1em;"><a href="/">&#x2709; Mail Admin</a></h2>
   <ul class="nav nav-pills">
    <li class="nav-item">
      <a data-toggle="pill"  class="nav-link active" href="#home">Change Password</a>
@@ -49,7 +49,7 @@
     </div>
     <div id="users" class="tab-pane fade">
      <h3>Edit Users</h3>
-     <form method='post' action=''>
+     <form method='post' action='/'>
       <table class="table table-hover">
        <thead>
         <tr>
@@ -74,16 +74,16 @@
          }
         ?>
          <tr>
-          <td><input name="new_mail_address" type="text" class="form-control input-sm chat-input" placeholder="Mail address"/></td>
-          <td><input name="new_mail_password" type="password" class="form-control input-sm chat-input" placeholder= "Password" /></td>
+          <td><input name="new_user_address" type="text" class="form-control input-sm chat-input" placeholder="Mail address"/></td>
+          <td><input name="new_user_password" type="password" class="form-control input-sm chat-input" placeholder= "Password" /></td>
           <td>
            <div class="form-check">
-            <input name="new_mail_enabled" type="checkbox" class="form-check-input" id="new_mail_enabled">
+            <input name="new_user_enabled" type="checkbox" class="form-check-input" />
            </div>
           </td>
           <td>
            <div class="form-check">
-            <input name="new_mail_sendonly" type="checkbox" class="form-check-input" id="new_mail_sendonly">
+            <input name="new_user_sendonly" type="checkbox" class="form-check-input" />
            </div>
           </td>
           <td>
@@ -98,7 +98,7 @@
     </div>
     <div id="aliases" class="tab-pane fade">
      <h3>Edit Aliases</h3>
-     <form method='post' action=''>
+     <form method='post' action='/'>
       <table class="table table-hover">
        <thead>
         <tr>
@@ -125,7 +125,7 @@
          <td><input name="new_alias_destination" type="text" class="form-control input-sm chat-input" placeholder="Destination address" /></td>
          <td>
           <div class="form-check">
-           <input name="new_alias_enabled" type="checkbox" class="form-check-input" id="new_alias_enabled">
+           <input name="new_alias_enabled" type="checkbox" class="form-check-input" />
           </div>
          </td>
          <td>

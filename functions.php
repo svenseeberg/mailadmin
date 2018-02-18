@@ -24,8 +24,8 @@ function verify_password($db_password, $new_password) {
         return false;
 }
 
-function login($cfg, $user, $password) {
-    $address = explode('@', $user);
+function get_db_password_address($cfg, $address) {
+    $address = explode('@', $address);
     $query = "SELECT id, password FROM accounts WHERE username=? AND domain=? LIMIT 1";
     $stmt = $cfg['mysqli']->prepare($query);
     $stmt->bind_param('ss', $address[0], $address[1]);
@@ -33,6 +33,22 @@ function login($cfg, $user, $password) {
     $stmt->execute();
     $stmt->fetch();
     $stmt->close();
+    return array($user_id, $db_password);
+}
+
+function get_db_password_id($cfg, $user_id) {
+    $query = "SELECT password FROM accounts WHERE id=? LIMIT 1";
+    $stmt = $cfg['mysqli']->prepare($query);
+    $stmt->bind_param('s', $user_id);
+    $stmt->bind_result($db_password);
+    $stmt->execute();
+    $stmt->fetch();
+    $stmt->close();
+    return $db_password;
+}
+
+function login($cfg, $address, $password) {
+    list($user_id, $db_password) = get_db_password_address($cfg, $address);
     if(verify_password($db_password, $password))
         return $user_id;
     else
@@ -97,14 +113,14 @@ function draw($page, $cfg) {
 }
 
 function parse_action($cfg) {
-    if(is_string($_POST['add_user'])) {
-        
-    } elseif(is_string($_POST['add_alias'])) {
-        
-    } elseif(is_string($_POST['update_user'])) {
-        
-    } elseif(is_string($_POST['update_alias'])) {
-        
+    if(array_key_exists('new_user_address' ,$_POST)) {
+        new_user($cfg, $_POST['new_user_address'], $_POST['new_usesr_password'], $cfg['defaults']['quota'], $_POST['new_user_enabled'], $_POST['new_user_sendonly']);
+    } elseif(array_key_exists('new_alias_source' ,$_POST)) {
+        new_alias($cfg, $_POST['new_alias_source'], $_POST['new_alias_destination'], $_POST['new_alias_enabled']);
+    } elseif(array_key_exists('edit_user' ,$_POST)) {
+        update_user($cfg, $_POST['edit_user'], $_POST['edit_user_password'], $_POST['edit_user_quota'], $_POST['edit_user_enabled'], $_POST['edit_user_sendonly']);
+    } elseif(array_key_exists('edit_alias' ,$_POST)) {
+        update_alias($cfg, $_POST['edit_alias'], $_POST['edit_alias_destination'], $_POST['edit_alias_enabled']);
     }
 }
 
@@ -136,7 +152,7 @@ function list_users($cfg, $id=false) {
      * items in the IN clause is a nightmare with prepared statements. */
     $inclause=implode("', '",($cfg['admin_domains']));
     if($id)
-        $query = sprintf("SELECT id, username, domain, quota, enabled, sendonly FROM accounts WHERE id = %i",$id);
+        $query = sprintf("SELECT id, username, domain, quota, enabled, sendonly FROM accounts WHERE id = %s",$id);
     else
         $query = sprintf("SELECT id, username, domain, quota, enabled, sendonly FROM accounts WHERE domain IN ('%s')",$inclause);
     $result = $cfg['mysqli']->query($query);
@@ -157,7 +173,7 @@ function list_aliases($cfg, $id=false) {
      * items in the IN clause is a nightmare with prepared statements. */
     $inclause=implode("', '",($cfg['admin_domains']));
     if($id)
-        $query = sprintf("SELECT * FROM aliases WHERE id = %i",$id);
+        $query = sprintf("SELECT * FROM aliases WHERE id = %s",$id);
     else
         $query = sprintf("SELECT * FROM aliases WHERE source_domain IN ('%s')",$inclause);
     $result = $cfg['mysqli']->query($query);
@@ -169,5 +185,25 @@ function list_aliases($cfg, $id=false) {
                             );
     }
     return $user_list;
+}
+
+function update_password($old_password, $new_password, $new_password2) {
+
+}
+
+function new_user($cfg, $address, $password, $quota, $enabled, $sendonly) {
+
+}
+
+function update_user($cfg, $user_id, $password, $quota, $enabled, $sendonly) {
+ 
+}
+
+function new_alias($cfg, $source, $destination, $enabled) {
+ 
+}
+
+function update_alias($cfg, $source, $destination, $enabled) {
+ 
 }
 ?>
