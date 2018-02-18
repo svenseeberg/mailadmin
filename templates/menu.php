@@ -29,7 +29,7 @@
    ?>
     <div id="users">
      <h3>Edit Users</h3>
-     <form method='post' action='/'>
+     <form method='post' action='/menu/users'>
       <table class="table table-hover">
        <thead>
         <tr>
@@ -83,7 +83,7 @@
    ?>
     <div id="aliases">
      <h3>Edit Aliases</h3>
-     <form method='post' action='/'>
+     <form method='post' action='/menu/aliases'>
       <table class="table table-hover">
        <thead>
         <tr>
