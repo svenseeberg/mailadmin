@@ -30,7 +30,7 @@
      <div class="container">
       <div class="row">
        <div class="" style="margin:auto;">
-        <form method='post' action=''>
+        <form method='post' action='/'>
          <div class="form-login">
          <input name="old_pw" type="password" id="user" class="form-control input-sm chat-input" placeholder="Current password" />
          </br>
@@ -78,12 +78,12 @@
           <td><input name="new_user_password" type="password" class="form-control input-sm chat-input" placeholder= "Password" /></td>
           <td>
            <div class="form-check">
-            <input name="new_user_enabled" type="checkbox" class="form-check-input" />
+            <input name="new_user_enabled" type="checkbox" class="form-check-input" value="1" checked />
            </div>
           </td>
           <td>
            <div class="form-check">
-            <input name="new_user_sendonly" type="checkbox" class="form-check-input" />
+            <input name="new_user_sendonly" type="checkbox" class="form-check-input" value="1" />
            </div>
           </td>
           <td>
@@ -125,7 +125,7 @@
          <td><input name="new_alias_destination" type="text" class="form-control input-sm chat-input" placeholder="Destination address" /></td>
          <td>
           <div class="form-check">
-           <input name="new_alias_enabled" type="checkbox" class="form-check-input" />
+           <input name="new_alias_enabled" type="checkbox" class="form-check-input" value="1" checked />
           </div>
          </td>
          <td>
