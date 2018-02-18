@@ -140,7 +140,8 @@ function parse_page($cfg) {
         $parts = explode('/', $_GET['path']);
         $cfg['page'] = $parts[0];
         $cfg['edit'] = $parts[1];
-        $cfg['item'] = $parts[2];
+        if(sizeof($parts) == 3)
+            $cfg['item'] = $parts[2];
     } else {
         $cfg['page'] = 'menu';
     }

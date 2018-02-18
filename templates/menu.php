@@ -1,31 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Mail Admin</title>
-    <link href="/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="/js/bootstrap.min.js"></script>
-  </head>
-<body>
-
-<div class="container">
-  <h2 style="margin-top:2em;margin-bottom:1em;"><a href="/">&#x2709; Mail Admin</a></h2>
-  <ul class="nav nav-pills">
-   <li class="nav-item">
-     <a data-toggle="pill"  class="nav-link active" href="#home">Change Password</a>
-   </li>
-   <li class="nav-item">
-     <a data-toggle="pill"  class="nav-link" href="#users">Edit Users</a>
-   </li>
-   <li class="nav-item">
-     <a data-toggle="pill"  class="nav-link" href="#aliases">Edit Aliases</a>
-   </li>
-  </ul>
-  <div class="tab-content" style="margin-top:0.5em;">
-    <div id="home" class="tab-pane fade in active">
+ <?php
+  include("templates/header.php");
+  if($cfg['edit'] == 'home') {
+   ?>
+    <div id="home">
      <h3>Change Your Password</h3>
      <div class="container">
       <div class="row">
@@ -47,7 +24,10 @@
       </div>
      </div>
     </div>
-    <div id="users" class="tab-pane fade">
+   <?php
+  } elseif($cfg['edit'] == 'users') {
+   ?>
+    <div id="users">
      <h3>Edit Users</h3>
      <form method='post' action='/'>
       <table class="table table-hover">
@@ -62,20 +42,22 @@
        </thead>
        <tbody>
         <?php
-         $users = list_users($cfg);
-         foreach($users as $user) {
-          echo "<tr>
-                 <td>".$user['address']."</td>
-                 <td>".$user['quota']." MB</td>
-                 <td>".$user['enabled']."</td>
-                 <td>".$user['sendonly']."</td>
-                 <td><a href='/edit/user/".$user['id']."'>&#9998;</a></td>
-                </tr>";
+         if(array_key_exists('admin_domains',$cfg)){
+          $users = list_users($cfg);
+          foreach($users as $user) {
+           echo "<tr>
+                  <td>".$user['address']."</td>
+                  <td>".$user['quota']." MB</td>
+                  <td>".$user['enabled']."</td>
+                  <td>".$user['sendonly']."</td>
+                  <td><a href='/edit/user/".$user['id']."'>&#9998;</a></td>
+                 </tr>";
+          }
          }
         ?>
          <tr>
           <td><input name="new_user_address" type="text" class="form-control input-sm chat-input" placeholder="Mail address"/></td>
-          <td><input name="new_user_password" type="password" class="form-control input-sm chat-input" placeholder= "Password" /></td>
+          <td><input name="new_user_password" type="text" class="form-control input-sm chat-input" placeholder= "Password" /></td>
           <td>
            <div class="form-check">
             <input name="new_user_enabled" type="checkbox" class="form-check-input" value="1" checked />
@@ -96,7 +78,10 @@
       </table>
      </form>
     </div>
-    <div id="aliases" class="tab-pane fade">
+   <?php
+  } elseif($cfg['edit'] == 'aliases') {
+   ?>
+    <div id="aliases">
      <h3>Edit Aliases</h3>
      <form method='post' action='/'>
       <table class="table table-hover">
@@ -110,14 +95,16 @@
        </thead>
        <tbody>
         <?php
-         $aliases = list_aliases($cfg);
-         foreach($aliases as $alias) {
-          echo "<tr>
-                 <td>".$alias['source']."</td>
-                 <td>".$alias['destination']."</td>
-                 <td>".$alias['enabled']."</td>
-                 <td><a href='/edit/alias/".$alias['id']."'>&#9998;</a></td>
-                </tr>";
+         if(array_key_exists('admin_domains',$cfg)){
+          $aliases = list_aliases($cfg);
+          foreach($aliases as $alias) {
+           echo "<tr>
+                  <td>".$alias['source']."</td>
+                  <td>".$alias['destination']."</td>
+                  <td>".$alias['enabled']."</td>
+                  <td><a href='/edit/alias/".$alias['id']."'>&#9998;</a></td>
+                 </tr>";
+          }
          }
         ?>
         <tr>
@@ -138,8 +125,7 @@
       </table>
      </form>
     </div>
-  </div>
-</div>
-
-</body>
-</html>
+   <?php
+  }
+include("templates/footer.php");
+   ?>

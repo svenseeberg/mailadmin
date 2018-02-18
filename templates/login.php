@@ -13,7 +13,7 @@
    <div class="container">
     <div class="row" style="margin-top:100px;">
      <div class="" style="margin:auto;">
-      <form method='post' action=''>
+      <form method='post' action='/menu/home/'>
        <div class="form-login">
        <h4>Log in</h4>
        <input name="user" type="text" id="user" class="form-control input-sm chat-input" placeholder="Mail address" />
