@@ -114,6 +114,16 @@ function save_session($cfg, $user_id) {
     $stmt->close();
 }
 
+function logout($cfg) {
+    $sid = session_id();
+    $query = "DELETE FROM logins WHERE session_id=?";
+    $stmt = $cfg['mysqli']->prepare($query);
+    $stmt->bind_param("s", $sid);
+    $stmt->execute();
+    $stmt->close();
+}
+
+
 function verify_logged_in($cfg, $user=false, $password=false) {
     if(is_string($user) and is_string($password) and substr_count($user, '@') == 1){
         $user_id = login($cfg, $user, $password);
