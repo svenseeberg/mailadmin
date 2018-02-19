@@ -23,5 +23,8 @@
    <li class="nav-item">
      <a class="nav-link <?php if($cfg['edit'] == 'aliases') echo "active"; ?>" href="/menu/aliases">Edit Aliases</a>
    </li>
+   <li class="nav-item">
+     <a class="nav-link" href="/logout">Log Out</a>
+   </li>
   </ul>
   <div class="tab-content" style="margin-top:0.5em;">
