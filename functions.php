@@ -249,6 +249,7 @@ function update_password($cfg, $old_password, $new_password, $new_password2) {
 }
 
 function new_user($cfg, $address, $password, $quota, $enabled=0, $sendonly=0) {
+    $address = filter_var($address, FILTER_SANITIZE_EMAIL);
     $address = explode('@', $address);
     if(sizeof($address)==2 and in_array($address[1], $cfg['admin_domains'])) {
         $query = "INSERT INTO accounts (username, domain, password, quota, enabled, sendonly) VALUES (?, ?, ?, ?, ?, ?)";
@@ -283,6 +284,8 @@ function update_user($cfg, $user_id, $password, $quota, $enabled, $sendonly) {
 }
 
 function new_alias($cfg, $source, $destination, $enabled) {
+    $source = filter_var($source, FILTER_SANITIZE_EMAIL);
+    $destination = filter_var($destination, FILTER_SANITIZE_EMAIL);
     $source = explode('@', $source);
     $destination = explode('@', $destination);
     if(sizeof($source)==2 and sizeof($destination)==2 and in_array($source[1], $cfg['admin_domains'])) {
@@ -298,6 +301,7 @@ function new_alias($cfg, $source, $destination, $enabled) {
 
 function update_alias($cfg, $alias_id, $destination, $enabled) {
     $domain = get_alias_domain($cfg, $alias_id);
+    $destination = filter_var($destination, FILTER_SANITIZE_EMAIL);
     $destination = explode('@', $destination);
     if(sizeof($destination)==2 and in_array($domain, $cfg['admin_domains'])) {
         $query = "UPDATE aliases SET destination_username=?, destination_domain=?, enabled=? WHERE id=?";
