@@ -17,9 +17,9 @@
        <div class="form-login">
        <h4>Log in</h4>
        <input name="user" type="text" id="user" class="form-control input-sm chat-input" placeholder="Mail address" />
-       </br>
+       <br>
        <input name="password" type="password" id="password" class="form-control input-sm chat-input" placeholder="Password" />
-       </br>
+       <br>
        <div class="wrapper">
        <input type="submit" class="btn btn-info" value="login">
        </div>
