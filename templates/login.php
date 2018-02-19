@@ -11,6 +11,7 @@
   </head>
   <body style="width:100%;">
    <div class="container">
+    <?php if($_GET['path'] == 'logout') echo "<h3>Bye bye!</h3>"; ?>
     <div class="row" style="margin-top:100px;">
      <div class="" style="margin:auto;">
       <form method='post' action='/menu/home/'>

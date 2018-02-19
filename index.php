@@ -7,9 +7,8 @@
         (array_key_exists('password' ,$_POST) ? $_POST['password'] : false));
     if($_GET['path'] == 'logout') {
         logout($cfg);
-        echo "<h3>Bye bye</h3>";
-    }
-    elseif(is_string($cfg['username'])) {
+        draw('login', $cfg);
+    } elseif(is_string($cfg['username'])) {
         $cfg = admin_domains($cfg);
         parse_action($cfg);
         $cfg = parse_page($cfg);
