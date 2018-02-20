@@ -11,11 +11,11 @@
          <input name="nonce" type="hidden" value="<?php echo $cfg['nonce']; ?>"/>
          <div class="form-login">
          <input name="old_pw" type="password" id="user" class="form-control input-sm chat-input" placeholder="Current password" />
-         </br>
+         <br>
          <input name="new_pw1" type="password" id="password" class="form-control input-sm chat-input" placeholder="New password" />
-         </br>
+         <br>
          <input name="new_pw2" type="password" id="password" class="form-control input-sm chat-input" placeholder="Confirm new password" />
-         </br>
+         <br>
          <div class="wrapper">
          <input type="submit" class="btn btn-info" value="login">
          </div>

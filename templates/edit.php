@@ -27,7 +27,7 @@
     <table class="table">
      <tr><th>Source</th><th><?php echo $alias['source']; ?></th><th></th></tr>
      <tr><td>Destination</td><td><input name="edit_alias_destination" type="text" class="form-control" placeholder="Set password" value="<?php echo $alias['destination']; ?>"/></td><td></td></tr>
-     <tr><td>Enabled</td><td><input name="edit_alias_enabled" type="checkbox" class="form-check-input" id="new_mail_sendonly"value="1" <?php if($alias['enabled']) echo "checked"; ?>/></td><td></td></tr>
+     <tr><td>Enabled</td><td><input name="edit_alias_enabled" type="checkbox" class="form-check-input" id="new_mail_sendonly" value="1" <?php if($alias['enabled']) echo "checked"; ?>/></td><td></td></tr>
      <tr><td><input type="submit" class="btn btn-info" value="Save"></td><td></td><td></td></tr>
     </table>
    </form>
