@@ -162,7 +162,7 @@ function verify_nonce($cfg) {
     $stmt->bind_result($nonce);
     $stmt->fetch();
     $stmt->close();
-    if($nonce == $_POST['nonce'])
+    if(array_key_exists('nonce' ,$_POST) and $nonce == $_POST['nonce'])
         return true;
     else
         return false;
