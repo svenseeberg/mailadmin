@@ -143,7 +143,7 @@ function verify_logged_in($cfg, $user=false, $password=false) {
 
 function generate_nonce($cfg) {
     $sid = session_id();
-    $nonce = hash('sha512', makeRandomString());
+    $nonce = hash('sha512', rand());
     $query = "UPDATE logins SET nonce=? WHERE session_id=?";
     $stmt = $cfg['mysqli']->prepare($query);
     $stmt->bind_param("ss", $nonce, $sid);
