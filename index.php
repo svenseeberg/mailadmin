@@ -10,7 +10,9 @@
         draw('login', $cfg);
     } elseif(is_string($cfg['username'])) {
         $cfg = admin_domains($cfg);
-        parse_action($cfg);
+        if(verify_nonce($cfg))
+            parse_action($cfg);
+        $cfg = generate_nonce($cfg);
         $cfg = parse_page($cfg);
         draw($cfg['page'], $cfg);
     } else {

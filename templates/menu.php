@@ -8,6 +8,7 @@
       <div class="row">
        <div class="" style="margin:auto;">
         <form method='post' action='/'>
+         <input name="nonce" type="hidden" value="<?php echo $cfg['nonce']; ?>"/>
          <div class="form-login">
          <input name="old_pw" type="password" id="user" class="form-control input-sm chat-input" placeholder="Current password" />
          </br>
@@ -30,6 +31,7 @@
     <div id="users">
      <h3>Edit Users</h3>
      <form method='post' action='/menu/users'>
+      <input name="nonce" type="hidden" value="<?php echo $cfg['nonce']; ?>"/>
       <table class="table table-hover">
        <thead>
         <tr>
@@ -84,6 +86,7 @@
     <div id="aliases">
      <h3>Edit Aliases</h3>
      <form method='post' action='/menu/aliases'>
+      <input name="nonce" type="hidden" value="<?php echo $cfg['nonce']; ?>"/>
       <table class="table table-hover">
        <thead>
         <tr>

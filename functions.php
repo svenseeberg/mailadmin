@@ -141,7 +141,36 @@ function verify_logged_in($cfg, $user=false, $password=false) {
     }
 }
 
+function generate_nonce($cfg) {
+    $sid = session_id();
+    $nonce = hash('sha512', makeRandomString());
+    $query = "UPDATE logins SET nonce=? WHERE session_id=?";
+    $stmt = $cfg['mysqli']->prepare($query);
+    $stmt->bind_param("ss", $nonce, $sid);
+    $stmt->execute();
+    $stmt->close();
+    $cfg['nonce'] = $nonce;
+    return $cfg;
+}
+
+function verify_nonce($cfg) {
+    $sid = session_id();
+    $query = "SELECT nonce FROM logins WHERE session_id=?";
+    $stmt = $cfg['mysqli']->prepare($query);
+    $stmt->bind_param('s',$sid);
+    $stmt->execute();
+    $stmt->bind_result($nonce);
+    $stmt->fetch();
+    $stmt->close();
+    if($nonce == $_POST['nonce'])
+        return true;
+    else
+        return false;
+}
+
 function draw($page, $cfg) {
+    $page = str_replace('/','',$page);
+    $page = str_replace('.','',$page);
     include("templates/".$page.".php");
 }
 
