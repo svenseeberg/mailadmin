@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Mail Admin</title>
     <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="/mailadmin.ico">
     <script src="/js/jquery.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
   </head>
