@@ -175,16 +175,35 @@ function draw($page, $cfg) {
 }
 
 function parse_page($cfg) {
-    if(array_key_exists('path' ,$_GET) and strlen($_GET['path']) > 0) {
+    if(array_key_exists('path', $_GET) and strlen($_GET['path']) > 0) {
         $parts = explode('/', $_GET['path']);
         $cfg['page'] = $parts[0];
         $cfg['edit'] = $parts[1];
         if(sizeof($parts) == 3)
             $cfg['item'] = $parts[2];
+        if($cfg['page'] == 'delete') {
+            delete_item($cfg);
+            $cfg['page'] = 'menu';
+        }
     } else {
         $cfg['page'] = 'menu';
     }
     return $cfg;
+}
+
+function delete_item($cfg) {
+    if($cfg['edit'] == 'user') {
+        $query="DELETE FROM accounts WHERE id=?";
+    }elseif($cfg['edit'] == 'alias') {
+        $query="DELETE FROM aliases WHERE id=?";
+    }else{
+        return false;
+    }
+    $stmt = $cfg['mysqli']->prepare($query);
+    $stmt->bind_param("i", $cfg['item']);
+    $result = $stmt->execute();
+    $stmt->close();
+    return $result;
 }
 
 function admin_domains($cfg) {

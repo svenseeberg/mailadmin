@@ -52,7 +52,10 @@
                   <td>".$user['quota']." MB</td>
                   <td>".$user['enabled']."</td>
                   <td>".$user['sendonly']."</td>
-                  <td><a href='/edit/user/".$user['id']."'>&#9998;</a></td>
+                  <td>
+                   <a href='/edit/user/".$user['id']."'>&#9998;</a>
+                   <a href='/delete/user/".$alias['id']."' onclick='confirm(\"Are you sure you want to delete this user?\")'>&#128465;</a>
+                  </td>
                  </tr>";
           }
          }
@@ -105,7 +108,10 @@
                   <td>".$alias['source']."</td>
                   <td>".$alias['destination']."</td>
                   <td>".$alias['enabled']."</td>
-                  <td><a href='/edit/alias/".$alias['id']."'>&#9998;</a></td>
+                  <td>
+                   <a href='/edit/alias/".$alias['id']."'>&#9998;</a>
+                   <a href='/delete/alias/".$alias['id']."' onclick='confirm(\"Are you sure you want to delete this alias?\")'>&#128465;</a>
+                  </td>
                  </tr>";
           }
          }
