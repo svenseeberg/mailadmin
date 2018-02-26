@@ -194,11 +194,11 @@ function delete_item($cfg) {
     if($cfg['edit'] == 'user') {
         $query="DELETE FROM accounts WHERE id=?";
         $cfg['page'] = 'menu';
-        $cfg['edit'] = 'users'
+        $cfg['edit'] = 'users';
     }elseif($cfg['edit'] == 'alias') {
         $query="DELETE FROM aliases WHERE id=?";
         $cfg['page'] = 'menu';
-        $cfg['edit'] = 'aliases'
+        $cfg['edit'] = 'aliases';
     }else{
         return $cfg;
     }
