@@ -192,10 +192,16 @@ function parse_page($cfg) {
 
 function delete_item($cfg) {
     if($cfg['edit'] == 'user') {
+        $domain = get_account_domain($cfg, $cfg['item']);
+        if(!in_array($domain, $cfg['admin_domains']))
+            return $cfg;
         $query="DELETE FROM accounts WHERE id=?";
         $cfg['page'] = 'menu';
         $cfg['edit'] = 'users';
     }elseif($cfg['edit'] == 'alias') {
+        $domain = get_alias_domain($cfg, $cfg['item']);
+        if(!in_array($domain, $cfg['admin_domains']))
+            return $cfg;
         $query="DELETE FROM aliases WHERE id=?";
         $cfg['page'] = 'menu';
         $cfg['edit'] = 'aliases';
