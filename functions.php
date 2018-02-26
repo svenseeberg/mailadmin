@@ -182,8 +182,7 @@ function parse_page($cfg) {
         if(sizeof($parts) == 3)
             $cfg['item'] = $parts[2];
         if($cfg['page'] == 'delete') {
-            delete_item($cfg);
-            $cfg['page'] = 'menu';
+            $cfg = delete_item($cfg);
         }
     } else {
         $cfg['page'] = 'menu';
@@ -194,16 +193,20 @@ function parse_page($cfg) {
 function delete_item($cfg) {
     if($cfg['edit'] == 'user') {
         $query="DELETE FROM accounts WHERE id=?";
+        $cfg['page'] = 'menu';
+        $cfg['edit'] = 'users'
     }elseif($cfg['edit'] == 'alias') {
         $query="DELETE FROM aliases WHERE id=?";
+        $cfg['page'] = 'menu';
+        $cfg['edit'] = 'aliases'
     }else{
-        return false;
+        return $cfg;
     }
     $stmt = $cfg['mysqli']->prepare($query);
     $stmt->bind_param("i", $cfg['item']);
     $result = $stmt->execute();
     $stmt->close();
-    return $result;
+    return $cfg;
 }
 
 function admin_domains($cfg) {
