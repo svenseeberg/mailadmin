@@ -54,7 +54,7 @@
                   <td>".$user['sendonly']."</td>
                   <td>
                    <a href='/edit/user/".$user['id']."'>&#9998;</a>
-                   <a href='/delete/user/".$user['id']."' onclick='confirm(\"Are you sure you want to delete this user?\")'>&#128465;</a>
+                   <a href='/delete/user/".$user['id']."' onclick='confirm(\"Are you sure you want to delete this user?\")'>🗑️</a>
                   </td>
                  </tr>";
           }
@@ -110,7 +110,7 @@
                   <td>".$alias['enabled']."</td>
                   <td>
                    <a href='/edit/alias/".$alias['id']."'>&#9998;</a>
-                   <a href='/delete/alias/".$alias['id']."' onclick='confirm(\"Are you sure you want to delete this alias?\")'>&#128465;</a>
+                   <a href='/delete/alias/".$alias['id']."' onclick='confirm(\"Are you sure you want to delete this alias?\")'>🗑</a>
                   </td>
                  </tr>";
           }
