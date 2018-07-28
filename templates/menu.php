@@ -110,7 +110,7 @@
                   <td>".$alias['enabled']."</td>
                   <td>
                    <a href='/edit/alias/".$alias['id']."'>&#9998;</a>
-                   <a href='/delete/alias/".$alias['id']."' onclick='confirm(\"Are you sure you want to delete this alias?\")'>🗑</a>
+                   <a href='/delete/alias/".$alias['id']."' onclick='confirm(\"Are you sure you want to delete this alias?\")'>🗑️</a>
                   </td>
                  </tr>";
           }
