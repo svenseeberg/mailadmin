@@ -333,7 +333,7 @@ function new_user($cfg, $address, $password, $quota, $enabled=0, $sendonly=0) {
 function update_user($cfg, $user_id, $password, $quota, $enabled, $sendonly) {
     $domain = get_account_domain($cfg, $user_id);
     if(in_array($domain, $cfg['admin_domains'])) {
-        if(sizeof($password) > 8) {
+        if(strlen($password) > 8) {
             $encrypted_password = encrypt_password($password);
             $query = "UPDATE accounts SET password=?, quota=?, enabled=?, sendonly=? WHERE id=?";
             $stmt = $cfg['mysqli']->prepare($query);
