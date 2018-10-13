@@ -1,4 +1,8 @@
 <?php
+/**
+ * reads config file and set up of mysqli object
+ * @return array config parameters
+ */
 function init() {
     $cfg = parse_ini_file ( 'config.ini', $process_sections = true);
     $cfg['mysqli'] = new mysqli($cfg['db']['host'], $cfg['db']['user'], $cfg['db']['password'], $cfg['db']['database']);
@@ -7,6 +11,12 @@ function init() {
     return $cfg;
 }
 
+/**
+ * encrypt password using crypt module
+ * @param  string  $password the password
+ * @param  boolean/string $salt     salt as string if used
+ * @return string hashed password
+ */
 function encrypt_password($password, $salt=false) {
     if(false == $salt) {
         $salt = substr(sha1(rand()), 0, 16);
@@ -15,6 +25,12 @@ function encrypt_password($password, $salt=false) {
     return $hashed_password;
 }
 
+/**
+ * test if password hash is same was password (hash of $new_password is calculated)
+ * @param  string $db_password  hash of password
+ * @param  string $new_password password
+ * @return bool               true = passwords matched
+ */
 function verify_password($db_password, $new_password) {
     $split = explode('$', $db_password);
     $encrypted = encrypt_password($new_password, $split[2]);
@@ -24,6 +40,12 @@ function verify_password($db_password, $new_password) {
         return false;
 }
 
+/**
+ * get password hash from db by email address
+ * @param  array $cfg     used config parameters
+ * @param  string $address email address of user
+ * @return array          user_id and user password of requested email
+ */
 function get_db_password_address($cfg, $address) {
     $address = explode('@', $address);
     $query = "SELECT id, password FROM accounts WHERE username=? AND domain=? LIMIT 1";
@@ -36,6 +58,12 @@ function get_db_password_address($cfg, $address) {
     return array($user_id, $db_password);
 }
 
+/**
+ * get password hash from db by user id
+ * @param  array $cfg     used config parameters
+ * @param  int $user_id user id
+ * @return string          password hash from db of user
+ */
 function get_db_password_id($cfg, $user_id) {
     $query = "SELECT password FROM accounts WHERE id=? LIMIT 1";
     $stmt = $cfg['mysqli']->prepare($query);
@@ -47,6 +75,12 @@ function get_db_password_id($cfg, $user_id) {
     return $db_password;
 }
 
+/**
+ * returns domain of give user id
+ * @param  array $cfg     used config parameters
+ * @param  int $user_id user id
+ * @return string          domain of user from db
+ */
 function get_account_domain($cfg, $user_id) {
     $query = "SELECT domain FROM accounts WHERE id=? LIMIT 1";
     $stmt = $cfg['mysqli']->prepare($query);
@@ -58,6 +92,12 @@ function get_account_domain($cfg, $user_id) {
     return $domain;
 }
 
+/**
+ * returns domain of give alias id
+ * @param  array $cfg     used config parameters
+ * @param  int $alias_id alias id
+ * @return string          domain of user by alias_id from db
+ */
 function get_alias_domain($cfg, $alias_id) {
     $query = "SELECT source_domain FROM aliases WHERE id=? LIMIT 1";
     $stmt = $cfg['mysqli']->prepare($query);
