@@ -524,12 +524,12 @@ function new_alias($cfg, $source, $destination, $enabled) {
 }
 
 /**
- * TODO
- * @param  [type] $cfg         [description]
- * @param  [type] $alias_id    [description]
- * @param  [type] $destination [description]
- * @param  [type] $enabled     [description]
- * @return [type]              [description]
+ * updates the alias by alias_id
+ * @param  array $cfg     used config parameters
+ * @param  int $alias_id    alias_id
+ * @param  string $destination new destination
+ * @param  boolean $enabled 1 if enabled
+ * @return boolean true if update in db successfully
  */
 function update_alias($cfg, $alias_id, $destination, $enabled) {
     $domain = get_alias_domain($cfg, $alias_id);
