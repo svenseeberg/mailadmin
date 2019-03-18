@@ -7,7 +7,19 @@
      <div class="container">
       <div class="row">
        <div class="" style="margin:auto;">
-        <form method='post' action='/'>
+        <script>
+function checkform() {
+    if(document.change_pw.new_pw1.value != document.change_pw.new_pw2.value) {
+        alert("Passwords do not match!");
+        return false;
+    } else if (document.change_pw.new_pw2.value.length <= 8 ) {
+        alert("Password too short!")
+    } else {
+        document.change_pw.submit();
+    }
+}
+        </script>
+        <form method='post' action='/' name='change_pw'>
          <input name="nonce" type="hidden" value="<?php echo $cfg['nonce']; ?>"/>
          <div class="form-login">
          <input name="old_pw" type="password" id="user" class="form-control input-sm chat-input" placeholder="Current password" />
@@ -17,7 +29,7 @@
          <input name="new_pw2" type="password" id="password" class="form-control input-sm chat-input" placeholder="Confirm new password" />
          <br>
          <div class="wrapper">
-         <input type="submit" class="btn btn-info" value="login">
+         <input type="submit" class="btn btn-warning" value="Change password" onclick="checkform();">
          </div>
          </div>
         </form>
