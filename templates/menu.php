@@ -14,6 +14,7 @@ function checkform() {
         return false;
     } else if (document.change_pw.new_pw2.value.length <= 8 ) {
         alert("Password too short!")
+        return false;
     } else {
         document.change_pw.submit();
     }
