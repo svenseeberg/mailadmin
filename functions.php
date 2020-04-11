@@ -1,4 +1,8 @@
 <?php
+/**
+ * reads config file and set up of mysqli object
+ * @return array config parameters
+ */
 function init() {
     $cfg = parse_ini_file ( 'config.ini', $process_sections = true);
     $cfg['mysqli'] = new mysqli($cfg['db']['host'], $cfg['db']['user'], $cfg['db']['password'], $cfg['db']['database']);
@@ -7,6 +11,12 @@ function init() {
     return $cfg;
 }
 
+/**
+ * encrypt password using crypt module
+ * @param  string  $password the password
+ * @param  boolean/string $salt     salt as string if used
+ * @return string hashed password
+ */
 function encrypt_password($password, $salt=false) {
     if(false == $salt) {
         $salt = substr(sha1(rand()), 0, 16);
@@ -15,6 +25,12 @@ function encrypt_password($password, $salt=false) {
     return $hashed_password;
 }
 
+/**
+ * test if password hash is same was password (hash of $new_password is calculated)
+ * @param  string $db_password  hash of password
+ * @param  string $new_password password
+ * @return bool               true = passwords matched
+ */
 function verify_password($db_password, $new_password) {
     $split = explode('$', $db_password);
     $encrypted = encrypt_password($new_password, $split[2]);
@@ -24,6 +40,12 @@ function verify_password($db_password, $new_password) {
         return false;
 }
 
+/**
+ * get password hash from db by email address
+ * @param  array $cfg     used config parameters
+ * @param  string $address email address of user
+ * @return array          user_id and user password of requested email
+ */
 function get_db_password_address($cfg, $address) {
     $address = explode('@', $address);
     $query = "SELECT id, password FROM accounts WHERE username=? AND domain=? LIMIT 1";
@@ -36,6 +58,12 @@ function get_db_password_address($cfg, $address) {
     return array($user_id, $db_password);
 }
 
+/**
+ * get password hash from db by user id
+ * @param  array $cfg     used config parameters
+ * @param  int $user_id user id
+ * @return string          password hash from db of user
+ */
 function get_db_password_id($cfg, $user_id) {
     $query = "SELECT password FROM accounts WHERE id=? LIMIT 1";
     $stmt = $cfg['mysqli']->prepare($query);
@@ -47,6 +75,12 @@ function get_db_password_id($cfg, $user_id) {
     return $db_password;
 }
 
+/**
+ * returns domain of give user id
+ * @param  array $cfg     used config parameters
+ * @param  int $user_id user id
+ * @return string          domain of user from db
+ */
 function get_account_domain($cfg, $user_id) {
     $query = "SELECT domain FROM accounts WHERE id=? LIMIT 1";
     $stmt = $cfg['mysqli']->prepare($query);
@@ -58,6 +92,12 @@ function get_account_domain($cfg, $user_id) {
     return $domain;
 }
 
+/**
+ * returns domain of give alias id
+ * @param  array $cfg     used config parameters
+ * @param  int $alias_id alias id
+ * @return string          domain of user by alias_id from db
+ */
 function get_alias_domain($cfg, $alias_id) {
     $query = "SELECT source_domain FROM aliases WHERE id=? LIMIT 1";
     $stmt = $cfg['mysqli']->prepare($query);
@@ -69,6 +109,13 @@ function get_alias_domain($cfg, $alias_id) {
     return $domain;
 }
 
+/**
+ * returns user_id if given email and password can be verified with db user data
+ * @param  array $cfg     used config parameters
+ * @param  string $address email address of user
+ * @param  string  $password the password
+ * @return int/bool           if user data correct -> user_id, otherwise false
+ */
 function login($cfg, $address, $password) {
     list($user_id, $db_password) = get_db_password_address($cfg, $address);
     if(verify_password($db_password, $password))
@@ -77,6 +124,12 @@ function login($cfg, $address, $password) {
         return false;
 }
 
+/**
+ * reads users domain from db and sets in cfg
+ * @param  array $cfg     used config parameters
+ * @param  int $user_id user id
+ * @return array $cfg     with set domain
+ */
 function set_user_domain($cfg, $user_id) {
     $query = "SELECT username, domain FROM accounts WHERE id=?";
     $stmt = $cfg['mysqli']->prepare($query);
@@ -91,6 +144,11 @@ function set_user_domain($cfg, $user_id) {
     return $cfg;
 }
 
+/**
+ * get user id by session_id
+ * @param  array $cfg     used config parameters
+ * @return int user id
+ */
 function get_current_user_id($cfg) {
     $sid = session_id();
     $time = time();
@@ -104,6 +162,12 @@ function get_current_user_id($cfg) {
     return $user_id;
 }
 
+/**
+ * store session id of user to db
+ * @param  array $cfg     used config parameters
+ * @param  int $user_id user id
+ * @return none
+ */
 function save_session($cfg, $user_id) {
     $sid = session_id();
     $timeout = time() + 600;
@@ -114,6 +178,11 @@ function save_session($cfg, $user_id) {
     $stmt->close();
 }
 
+/**
+ * logout user by removing session_id from db
+ * @param  array $cfg     used config parameters
+ * @return none
+ */
 function logout($cfg) {
     $sid = session_id();
     $query = "DELETE FROM logins WHERE session_id=?";
@@ -123,7 +192,13 @@ function logout($cfg) {
     $stmt->close();
 }
 
-
+/**
+ * checks if user is logged in and sets domain to cfg parameters?
+ * @param  array $cfg     used config parameters
+ * @param  string $user     user, default false
+ * @param  string $password password, default false
+ * @return cfg           cfg with domain, or false
+ */
 function verify_logged_in($cfg, $user=false, $password=false) {
     if(is_string($user) and is_string($password) and substr_count($user, '@') == 1){
         $user_id = login($cfg, $user, $password);
@@ -141,6 +216,11 @@ function verify_logged_in($cfg, $user=false, $password=false) {
     }
 }
 
+/**
+ * generates nonce, saves to db and set in cfg array
+ * @param  array $cfg     used config parameters
+ * @return array $cfg     used config parameters with nonce
+ */
 function generate_nonce($cfg) {
     $sid = session_id();
     $nonce = hash('sha512', rand());
@@ -153,6 +233,11 @@ function generate_nonce($cfg) {
     return $cfg;
 }
 
+/**
+ * checks if nonce in db and cfg are matching
+ * @param  array $cfg     used config parameters
+ * @return boolean      true if correct
+ */
 function verify_nonce($cfg) {
     $sid = session_id();
     $query = "SELECT nonce FROM logins WHERE session_id=?";
@@ -168,12 +253,23 @@ function verify_nonce($cfg) {
         return false;
 }
 
+/**
+ * TODO
+ * @param  [type] $page [description]
+ * @param  [type] $cfg  [description]
+ * @return [type]       [description]
+ */
 function draw($page, $cfg) {
     $page = str_replace('/','',$page);
     $page = str_replace('.','',$page);
     include("templates/".$page.".php");
 }
 
+/**
+ * TODO
+ * @param  [type] $cfg [description]
+ * @return [type]      [description]
+ */
 function parse_page($cfg) {
     if(array_key_exists('path', $_GET) and strlen($_GET['path']) > 0) {
         $parts = explode('/', $_GET['path']);
@@ -190,6 +286,11 @@ function parse_page($cfg) {
     return $cfg;
 }
 
+/**
+ * TODO
+ * @param  [type] $cfg [description]
+ * @return [type]      [description]
+ */
 function delete_item($cfg) {
     if($cfg['edit'] == 'user') {
         $domain = get_account_domain($cfg, $cfg['item']);
@@ -215,6 +316,11 @@ function delete_item($cfg) {
     return $cfg;
 }
 
+/**
+ * TODO
+ * @param  [type] $cfg [description]
+ * @return [type]      [description]
+ */
 function admin_domains($cfg) {
     $mail = $cfg['username'].'@'.$cfg['userdomain'];
     foreach($cfg['admins'] as $domain => $addresses) {
@@ -225,6 +331,12 @@ function admin_domains($cfg) {
     return $cfg;
 }
 
+/**
+ * TODO
+ * @param  [type]  $cfg [description]
+ * @param  boolean $id  [description]
+ * @return [type]       [description]
+ */
 function list_users($cfg, $id=false) {
     /* We don't need a prepared statement here because the query
      * parameters are read from the config.ini. And a variable amount of
@@ -245,7 +357,12 @@ function list_users($cfg, $id=false) {
     }
     return $user_list;
 }
-
+/**
+ * TODO
+ * @param  [type]  $cfg [description]
+ * @param  boolean $id  [description]
+ * @return [type]       [description]
+ */
 function list_aliases($cfg, $id=false) {
     /* We don't need a prepared statement here because the query
      * parameters are read from the config.ini. And a variable amount of
@@ -265,7 +382,11 @@ function list_aliases($cfg, $id=false) {
     }
     return $user_list;
 }
-
+/**
+ * TODO
+ * @param  [type] $cfg [description]
+ * @return [type]      [description]
+ */
 function parse_action($cfg) {
     if(array_key_exists('new_user_address' ,$_POST) and array_key_exists('new_user_password' ,$_POST)) {
         new_user(           $cfg, $_POST['new_user_address'],
@@ -301,6 +422,14 @@ function parse_action($cfg) {
     }
 }
 
+/**
+ * sets new password, if new_password and new_password2 are matching and old_password is correct
+ * @param  array $cfg     used config parameters
+ * @param  string $old_password  [description]
+ * @param  string $new_password  [description]
+ * @param  string $new_password2 [description]
+ * @return boolean true if password chaged successfully
+ */
 function update_password($cfg, $old_password, $new_password, $new_password2) {
     $db_password = get_db_password_id($cfg, $cfg['user_id']);
     if($new_password == $new_password2 and verify_password($db_password, $old_password)) {
@@ -315,6 +444,16 @@ function update_password($cfg, $old_password, $new_password, $new_password2) {
     return false;
 }
 
+/**
+ * creates new user in db
+ * @param  array $cfg     used config parameters
+ * @param  string  $address  email of new user
+ * @param  string  $password password of ne user
+ * @param  int  $quota    quota in ? TODO
+ * @param  integer $enabled  boolean? TODO
+ * @param  integer $sendonly [description]TODO
+ * @return boolean true if user created successfully
+ */
 function new_user($cfg, $address, $password, $quota, $enabled=0, $sendonly=0) {
     $address = filter_var($address, FILTER_SANITIZE_EMAIL);
     $address = explode('@', $address);
@@ -330,6 +469,16 @@ function new_user($cfg, $address, $password, $quota, $enabled=0, $sendonly=0) {
     return false;
 }
 
+/**
+ * TODO
+ * @param  [type] $cfg      [description]
+ * @param  [type] $user_id  [description]
+ * @param  [type] $password [description]
+ * @param  [type] $quota    [description]
+ * @param  [type] $enabled  [description]
+ * @param  [type] $sendonly [description]
+ * @return [type]           [description]
+ */
 function update_user($cfg, $user_id, $password, $quota, $enabled, $sendonly) {
     $domain = get_account_domain($cfg, $user_id);
     if(in_array($domain, $cfg['admin_domains'])) {
@@ -350,6 +499,14 @@ function update_user($cfg, $user_id, $password, $quota, $enabled, $sendonly) {
     return false;
 }
 
+/**
+ * TODO
+ * @param  [type] $cfg         [description]
+ * @param  [type] $source      [description]
+ * @param  [type] $destination [description]
+ * @param  [type] $enabled     [description]
+ * @return [type]              [description]
+ */
 function new_alias($cfg, $source, $destination, $enabled) {
     $source = filter_var($source, FILTER_SANITIZE_EMAIL);
     $destination = filter_var($destination, FILTER_SANITIZE_EMAIL);
@@ -366,6 +523,14 @@ function new_alias($cfg, $source, $destination, $enabled) {
     return false;
 }
 
+/**
+ * updates the alias by alias_id
+ * @param  array $cfg     used config parameters
+ * @param  int $alias_id    alias_id
+ * @param  string $destination new destination
+ * @param  boolean $enabled 1 if enabled
+ * @return boolean true if update in db successfully
+ */
 function update_alias($cfg, $alias_id, $destination, $enabled) {
     $domain = get_alias_domain($cfg, $alias_id);
     $destination = filter_var($destination, FILTER_SANITIZE_EMAIL);
