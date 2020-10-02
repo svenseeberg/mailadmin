@@ -332,7 +332,7 @@ function admin_domains($cfg) {
 }
 
 /**
- * TODO
+ * returns list of users
  * @param  [type]  $cfg [description]
  * @param  boolean $id  [description]
  * @return [type]       [description]
@@ -358,7 +358,7 @@ function list_users($cfg, $id=false) {
     return $user_list;
 }
 /**
- * TODO
+ * returns list of aliases
  * @param  [type]  $cfg [description]
  * @param  boolean $id  [description]
  * @return [type]       [description]
@@ -470,7 +470,7 @@ function new_user($cfg, $address, $password, $quota, $enabled=0, $sendonly=0) {
 }
 
 /**
- * TODO
+ * update the user config
  * @param  [type] $cfg      [description]
  * @param  [type] $user_id  [description]
  * @param  [type] $password [description]
@@ -500,7 +500,7 @@ function update_user($cfg, $user_id, $password, $quota, $enabled, $sendonly) {
 }
 
 /**
- * TODO
+ * create a new alias
  * @param  [type] $cfg         [description]
  * @param  [type] $source      [description]
  * @param  [type] $destination [description]
